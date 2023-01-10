@@ -29,6 +29,9 @@ func (s *Scraper) GetTweetDetail(focalTweetId string) (*entity.ParsedTweet, erro
 	if err != nil {
 		return nil, err
 	}
+	if len(tweetDetailResponse.Errors) > 0 {
+		return nil, errors.New(tweetDetailResponse.Errors[0].Message)
+	}
 
 	for _, instructionRaw := range tweetDetailResponse.Data.ThreadedConversationWithInjectionsV2.Instructions {
 		var instruction entity.Instruction

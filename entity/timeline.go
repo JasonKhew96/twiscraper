@@ -44,6 +44,7 @@ type HomeLatestTimelineVariables struct {
 // response
 
 type HomeTimelineResponse struct {
+	Errors []TwitterError `json:"errors"`
 	Data struct {
 		Home struct {
 			HomeTimelineUrt struct {

@@ -3,6 +3,7 @@ package twiscraper
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"net/http"
 	"net/url"
@@ -86,6 +87,9 @@ func (s *Scraper) fetchTimeline(opt fetchOptions, id string, count int, cursor s
 		vl, err = entity.NewUserTweetsParams(id, count, cursor)
 		u = apiUserTweets
 	case FetchMedia:
+		if !s.IsLogined() {
+			return nil, "", ErrorNotLogined
+		}
 		if count > 20 {
 			count = 20
 		}
@@ -110,6 +114,9 @@ func (s *Scraper) fetchTimeline(opt fetchOptions, id string, count int, cursor s
 	err = s.requestAPI(req, &timelineTweets)
 	if err != nil {
 		return nil, "", err
+	}
+	if len(timelineTweets.Errors) > 0 {
+		return nil, "", errors.New(timelineTweets.Errors[0].Message)
 	}
 
 	var tweetResults []entity.ParsedTweet

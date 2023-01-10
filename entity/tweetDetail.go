@@ -44,6 +44,7 @@ type TweetDetailFeatures struct {
 // response
 
 type TweetDetailResponse struct {
+	Errors []TwitterError `json:"errors"`
 	Data struct {
 		ThreadedConversationWithInjectionsV2 struct {
 			Instructions []TimelineInstruction `json:"instructions"`

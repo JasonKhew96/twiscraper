@@ -223,6 +223,7 @@ type TimelineTweetEntry struct {
 }
 
 type TimelineTweetsResponse struct {
+	Errors []TwitterError `json:"errors"`
 	Data struct {
 		User struct {
 			Result struct {

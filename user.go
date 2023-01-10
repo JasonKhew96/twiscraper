@@ -3,6 +3,7 @@ package twiscraper
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"net/http"
 	"net/url"
@@ -39,6 +40,9 @@ func (s *Scraper) GetUserByScreenName(screenName string) (*entity.ParsedUser, er
 	if err != nil {
 		return nil, err
 	}
+	// if len(user.Errors) > 0 {
+	// 	return nil, errors.New(user.Errors[0].Message)
+	// }
 
 	if user.Data.User.Result.TypeName == "" {
 		return nil, fmt.Errorf("user %s not found", screenName)
@@ -161,6 +165,9 @@ func (s *Scraper) fetchFollowers(opt fetchOptions, userId string, count int, cur
 	err = s.requestAPI(req, &followers)
 	if err != nil {
 		return nil, "", err
+	}
+	if len(followers.Errors) > 0 {
+		return nil, "", errors.New(followers.Errors[0].Message)
 	}
 
 	var userResults []entity.ParsedUser

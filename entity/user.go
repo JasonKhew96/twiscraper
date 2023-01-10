@@ -157,6 +157,7 @@ type UserResult struct {
 }
 
 type UserByScreenName struct {
+	Errors []TwitterError `json:"errors"`
 	Data struct {
 		User struct {
 			Result UserResult `json:"result"`
@@ -283,6 +284,7 @@ type TimelineCursorEntry struct {
 }
 
 type FollowersResponse struct {
+	Errors []TwitterError `json:"errors"`
 	Data struct {
 		User struct {
 			Result struct {
