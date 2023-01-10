@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/url"
+	"strconv"
 	"strings"
 	"time"
 )
@@ -179,6 +180,7 @@ type TweetResult struct {
 	Legacy                  TweetLegacy `json:"legacy"`
 	QuickPromoteEligibility interface{} `json:"quick_promote_eligibility"`
 	Views                   struct {
+		Count string `json:"count"`
 		State string `json:"state"`
 	} `json:"views"`
 }
@@ -224,7 +226,7 @@ type TimelineTweetEntry struct {
 
 type TimelineTweetsResponse struct {
 	Errors []TwitterError `json:"errors"`
-	Data struct {
+	Data   struct {
 		User struct {
 			Result struct {
 				TypeName   string `json:"__typename"`
@@ -382,6 +384,7 @@ type ParsedTweet struct {
 	RetweetedTweet    *ParsedTweet
 	IsRecommended     bool
 	Url               string
+	Views             int
 	ParsedUser        ParsedUser
 }
 
@@ -489,6 +492,15 @@ func (t *TweetResult) Parse() (*ParsedTweet, error) {
 		}
 	}
 
+	views := 0
+	viewsRaw := t.Views.Count
+	if viewsRaw != "" {
+		views, err = strconv.Atoi(viewsRaw)
+		if err != nil {
+			return nil, err
+		}
+	}
+
 	parsedTweet := ParsedTweet{
 		CreatedAt: createdAt,
 		TweetId:   t.Legacy.IdStr,
@@ -515,6 +527,7 @@ func (t *TweetResult) Parse() (*ParsedTweet, error) {
 		IsRetweet:         isRetweet,
 		RetweetedTweet:    retweetedTweet,
 		Url:               fmt.Sprintf("https://twitter.com/%s/status/%s", userResult.ScreenName, t.Legacy.IdStr),
+		Views:             views,
 		ParsedUser:        *userResult,
 	}
 	return &parsedTweet, nil
