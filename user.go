@@ -82,14 +82,15 @@ func (s *Scraper) GetFollowers(ctx context.Context, screenName string, count int
 
 func (s *Scraper) getFollowersStream(ctx context.Context, opt fetchOptions, screenName string, count int, fetchFunc fetchFollowersFunc) <-chan *FollowersResult {
 	ch := make(chan *FollowersResult)
-	id, err := s.GetUserIdByScreenName(screenName)
-	if err != nil {
-		ch <- &FollowersResult{Error: err}
-		close(ch)
-		return ch
-	}
-	go func(id string) {
+	go func(screenName string) {
 		defer close(ch)
+
+		id, err := s.GetUserIdByScreenName(screenName)
+		if err != nil {
+			ch <- &FollowersResult{Error: err}
+			return
+		}
+
 		var nextCursor string
 		followersCount := 0
 		for followersCount < count {
@@ -127,7 +128,7 @@ func (s *Scraper) getFollowersStream(ctx context.Context, opt fetchOptions, scre
 				followersCount++
 			}
 		}
-	}(id)
+	}(screenName)
 	return ch
 }
 

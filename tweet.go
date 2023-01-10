@@ -23,16 +23,17 @@ func (s *Scraper) GetTimelineMedia(ctx context.Context, screenName string, count
 	return s.getTimelineStream(ctx, FetchMedia, screenName, count, s.fetchTimeline)
 }
 
-func (s *Scraper) getTimelineStream(ctx context.Context, opt fetchOptions, id string, count int, fetchFunc fetchTimelineFunc) <-chan *TimelineResult {
+func (s *Scraper) getTimelineStream(ctx context.Context, opt fetchOptions, screenName string, count int, fetchFunc fetchTimelineFunc) <-chan *TimelineResult {
 	ch := make(chan *TimelineResult)
-	id, err := s.GetUserIdByScreenName(id)
-	if err != nil {
-		ch <- &TimelineResult{Error: err}
-		close(ch)
-		return ch
-	}
-	go func(id string) {
+	go func(screenName string) {
 		defer close(ch)
+
+		id, err := s.GetUserIdByScreenName(screenName)
+		if err != nil {
+			ch <- &TimelineResult{Error: err}
+			return
+		}
+
 		var nextCursor string
 		tweetsCount := 0
 		for tweetsCount < count {
@@ -70,7 +71,7 @@ func (s *Scraper) getTimelineStream(ctx context.Context, opt fetchOptions, id st
 				tweetsCount++
 			}
 		}
-	}(id)
+	}(screenName)
 	return ch
 }
 
