@@ -14,7 +14,7 @@ func (s *Scraper) Follow(screenName string) error {
 		return fmt.Errorf("already following %s", screenName)
 	}
 
-	req, err := http.NewRequest(http.MethodPost, API_FRIENDSHIPS_CREATE, nil)
+	req, err := http.NewRequest(http.MethodPost, apiFriendShipsCreate, nil)
 	if err != nil {
 		return err
 	}
@@ -39,7 +39,7 @@ func (s *Scraper) Unfollow(screenName string) error {
 		return fmt.Errorf("not following %s", screenName)
 	}
 
-	req, err := http.NewRequest(http.MethodPost, API_FRIENDSHIPS_DESTROY, nil)
+	req, err := http.NewRequest(http.MethodPost, apiFriendshipsDestroy, nil)
 	if err != nil {
 		return err
 	}

@@ -25,7 +25,7 @@ func (s *Scraper) GetUserByScreenName(screenName string) (*entity.ParsedUser, er
 	if err != nil {
 		return nil, err
 	}
-	apiUrl, err := url.Parse(API_USER_BY_SCREEN_NAME)
+	apiUrl, err := url.Parse(apiUserByScreenName)
 	if err != nil {
 		return nil, err
 	}
@@ -144,9 +144,9 @@ func (s *Scraper) fetchFollowers(opt fetchOptions, userId string, count int, cur
 	var u string
 	switch opt {
 	case FetchFollowing:
-		u = API_FOLLOWING
+		u = apiFollowing
 	case FetchFollowers:
-		u = API_FOLLOWERS
+		u = apiFollowers
 	}
 	apiUrl, err := url.Parse(u)
 	if err != nil {

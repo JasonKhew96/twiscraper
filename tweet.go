@@ -84,13 +84,13 @@ func (s *Scraper) fetchTimeline(opt fetchOptions, id string, count int, cursor s
 			count = 40
 		}
 		vl, err = entity.NewUserTweetsParams(id, count, cursor)
-		u = API_USER_TWEETS
+		u = apiUserTweets
 	case FetchMedia:
 		if count > 20 {
 			count = 20
 		}
 		vl, err = entity.NewUserMediaParams(id, count, cursor)
-		u = API_USER_MEDIA
+		u = apiUserMedia
 	default:
 		return nil, "", fmt.Errorf("invalid fetch option")
 	}

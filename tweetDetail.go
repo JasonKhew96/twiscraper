@@ -15,7 +15,7 @@ func (s *Scraper) GetTweetDetail(focalTweetId string) (*entity.ParsedTweet, erro
 	if err != nil {
 		return nil, err
 	}
-	apiUrl, err := url.Parse(API_TWEET_DETAIL)
+	apiUrl, err := url.Parse(apiTweetDetail)
 	if err != nil {
 		return nil, err
 	}

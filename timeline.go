@@ -78,10 +78,10 @@ func (s *Scraper) fetchHomeTimeline(opt fetchOptions, count int, cursor string) 
 	switch opt {
 	case FetchHomeTimeline:
 		vl, err = entity.NewHomeTimelineParams(count, cursor)
-		u = API_HOME_TIMELINE
+		u = apiHomeTimeline
 	case FetchHomeLatestTimeline:
 		vl, err = entity.NewHomeLatestTimelineParams(count, cursor)
-		u = API_HOME_LATEST_TIMELINE
+		u = apiHomeLatestTimeline
 	default:
 		return nil, "", fmt.Errorf("invalid fetch option")
 	}

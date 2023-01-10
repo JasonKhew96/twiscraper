@@ -1,26 +1,26 @@
 package twiscraper
 
 const (
-	DEFAULT_BEARER_TOKEN = "AAAAAAAAAAAAAAAAAAAAANRILgAAAAAAnNwIzUejRCOuH5E6I8xnZz4puTs%3D1Zv7ttfk8LF81IUq16cHjhLTvJu4FA33AGWWjCpTnA"
-	DEFAULT_USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36"
+	defaultBearerToken = "AAAAAAAAAAAAAAAAAAAAANRILgAAAAAAnNwIzUejRCOuH5E6I8xnZz4puTs%3D1Zv7ttfk8LF81IUq16cHjhLTvJu4FA33AGWWjCpTnA"
+	defaultUserAgent   = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36"
 
-	SCHEME         = "https"
-	ENDPOINT       = "api.twitter.com"
-	GRAPHQL_PATH   = "/graphql"
-	GRAPHQL_PREFIX = SCHEME + "://" + ENDPOINT + GRAPHQL_PATH
+	scheme        = "https"
+	endpoint      = "api.twitter.com"
+	graphqlPath   = "/graphql"
+	graphqlPrefix = scheme + "://" + endpoint + graphqlPath
 
-	API_USER_BY_SCREEN_NAME = GRAPHQL_PREFIX + "/tgMiZwwhWR2sI0KsNsExrA/UserByScreenName"
-	API_FOLLOWING           = GRAPHQL_PREFIX + "/cocC_CzoxzpwgXr3jhG7DA/Following"
-	API_FOLLOWERS           = GRAPHQL_PREFIX + "/KwJEsSEIHz991Ansf4Y1tQ/Followers"
+	apiUserByScreenName = graphqlPrefix + "/tgMiZwwhWR2sI0KsNsExrA/UserByScreenName"
+	apiFollowing        = graphqlPrefix + "/cocC_CzoxzpwgXr3jhG7DA/Following"
+	apiFollowers        = graphqlPrefix + "/KwJEsSEIHz991Ansf4Y1tQ/Followers"
 
-	API_USER_TWEETS = GRAPHQL_PREFIX + "/whN_WW_HT--6SW2bhDcx4Q/UserTweets"
-	API_USER_MEDIA  = GRAPHQL_PREFIX + "/QqRNmKWm3uTs75PCYTGkFw/UserMedia"
+	apiUserTweets = graphqlPrefix + "/whN_WW_HT--6SW2bhDcx4Q/UserTweets"
+	apiUserMedia  = graphqlPrefix + "/QqRNmKWm3uTs75PCYTGkFw/UserMedia"
 
-	API_HOME_TIMELINE        = GRAPHQL_PREFIX + "/XMoTnsLCI_a4DyvHNLSoKQ/HomeTimeline"
-	API_HOME_LATEST_TIMELINE = GRAPHQL_PREFIX + "/kM-kIqajFOTGQLsLXv8YxQ/HomeLatestTimeline"
+	apiHomeTimeline       = graphqlPrefix + "/XMoTnsLCI_a4DyvHNLSoKQ/HomeTimeline"
+	apiHomeLatestTimeline = graphqlPrefix + "/kM-kIqajFOTGQLsLXv8YxQ/HomeLatestTimeline"
 
-	API_TWEET_DETAIL = GRAPHQL_PREFIX + "/d9VslTaZvKUSOh88ntOT_g/TweetDetail"
+	apiTweetDetail = graphqlPrefix + "/d9VslTaZvKUSOh88ntOT_g/TweetDetail"
 
-	API_FRIENDSHIPS_CREATE  = SCHEME + "://" + ENDPOINT + "/i/api/1.1/friendships/create.json"
-	API_FRIENDSHIPS_DESTROY = SCHEME + "://" + ENDPOINT + "/i/api/1.1/friendships/destroy.json"
+	apiFriendShipsCreate  = scheme + "://" + endpoint + "/i/api/1.1/friendships/create.json"
+	apiFriendshipsDestroy = scheme + "://" + endpoint + "/i/api/1.1/friendships/destroy.json"
 )

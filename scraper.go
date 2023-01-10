@@ -39,9 +39,9 @@ func (s *Scraper) hasGuestToken() bool {
 
 func New(opts ScraperOptions) (*Scraper, error) {
 	scraper := Scraper{
-		bearerToken: DEFAULT_BEARER_TOKEN,
+		bearerToken: defaultBearerToken,
 		client:      &http.Client{Timeout: DefaultClientTimeout},
-		userAgent:   DEFAULT_USER_AGENT,
+		userAgent:   defaultUserAgent,
 	}
 	if opts.Delay != nil {
 		scraper.delay = *opts.Delay
