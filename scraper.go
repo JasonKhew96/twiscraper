@@ -7,8 +7,6 @@ import (
 	"time"
 )
 
-const DefaultClientTimeout = 10 * time.Second
-
 type Scraper struct {
 	bearerToken    string
 	client         *http.Client
@@ -40,7 +38,7 @@ func (s *Scraper) hasGuestToken() bool {
 func New(opts ScraperOptions) (*Scraper, error) {
 	scraper := Scraper{
 		bearerToken: defaultBearerToken,
-		client:      &http.Client{Timeout: DefaultClientTimeout},
+		client:      &http.Client{Timeout: defaultClientTimeout},
 		userAgent:   defaultUserAgent,
 	}
 	if opts.Delay != nil {
