@@ -24,12 +24,12 @@ type Scraper struct {
 }
 
 type ScraperOptions struct {
-	Delay *time.Duration
+	Delay time.Duration
 
 	Cookie     string
 	XCsrfToken string
 
-	Timeout   *time.Duration
+	Timeout   time.Duration
 	Proxy     string
 	UserAgent string
 }
@@ -48,8 +48,8 @@ func New(opts ScraperOptions) (*Scraper, error) {
 		client:      &http.Client{Timeout: defaultClientTimeout},
 		userAgent:   defaultUserAgent,
 	}
-	if opts.Delay != nil {
-		scraper.delay = *opts.Delay
+	if opts.Delay != 0 {
+		scraper.delay = opts.Delay
 	}
 	if opts.Cookie != "" && opts.XCsrfToken != "" {
 		scraper.cookie = opts.Cookie
@@ -66,8 +66,8 @@ func New(opts ScraperOptions) (*Scraper, error) {
 			},
 		}
 	}
-	if opts.Timeout != nil {
-		scraper.client.Timeout = *opts.Timeout
+	if opts.Timeout != 0 {
+		scraper.client.Timeout = opts.Timeout
 	}
 	if opts.UserAgent != "" {
 		scraper.userAgent = opts.UserAgent
