@@ -2,62 +2,64 @@ package twiscraper
 
 import (
 	"net/http"
+	"net/url"
 	"sync"
 	"time"
 )
 
+const DefaultClientTimeout = 10 * time.Second
+
 type Scraper struct {
 	bearerToken    string
 	client         *http.Client
-	delay          time.Duration
 	guestToken     string
 	guestCreatedAt time.Time
 	wg             sync.WaitGroup
 
+	delay      time.Duration
 	cookie     string
 	xCsrfToken string
 }
 
-const DefaultClientTimeout = 10 * time.Second
+type ScraperOptions struct {
+	Delay *time.Duration
 
-var defaultScraper *Scraper
+	Cookie     string
+	XCsrfToken string
 
-func New() *Scraper {
-	return &Scraper{
-		bearerToken: DEFAULT_BEARER_TOKEN,
-		client:      &http.Client{Timeout: DefaultClientTimeout},
-	}
+	Timeout *time.Duration
+	Proxy   string
 }
 
-func (s *Scraper) SetBearerToken(bearerToken string) {
-	s.bearerToken = bearerToken
-	s.guestToken = ""
-}
-
-func (s *Scraper) HasGuestToken() bool {
+func (s *Scraper) hasGuestToken() bool {
 	return s.guestToken != ""
 }
 
-func (s *Scraper) WithDelay(delay time.Duration) *Scraper {
-	s.delay = delay
-	return s
-}
-
-func (s *Scraper) WithTimeout(timeout time.Duration) *Scraper {
-	s.client.Timeout = timeout
-	return s
-}
-
-func (s *Scraper) WithCookie(cookie string) *Scraper {
-	s.cookie = cookie
-	return s
-}
-
-func (s *Scraper) WithXCsrfToken(token string) *Scraper {
-	s.xCsrfToken = token
-	return s
-}
-
-func init() {
-	defaultScraper = New()
+func New(opts ScraperOptions) (*Scraper, error) {
+	scraper := Scraper{
+		bearerToken: DEFAULT_BEARER_TOKEN,
+		client:      &http.Client{Timeout: DefaultClientTimeout},
+	}
+	if opts.Delay != nil {
+		scraper.delay = *opts.Delay
+	}
+	if opts.Cookie != "" && opts.XCsrfToken != "" {
+		scraper.cookie = opts.Cookie
+		scraper.xCsrfToken = opts.XCsrfToken
+	}
+	if opts.Proxy != "" {
+		u, err := url.Parse(opts.Proxy)
+		if err != nil {
+			return nil, err
+		}
+		scraper.client = &http.Client{
+			Transport: &http.Transport{
+				Proxy: http.ProxyURL(u),
+			},
+		}
+	}
+	if opts.Timeout != nil {
+		scraper.client.Timeout = *opts.Timeout
+	}
+	return &scraper, nil
 }
