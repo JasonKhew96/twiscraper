@@ -27,6 +27,7 @@ func (s *Scraper) requestAPI(req *http.Request, target interface{}) error {
 		}
 	}
 
+	req.Header.Set("User-Agent", s.userAgent)
 	req.Header.Set("Authorization", "Bearer "+s.bearerToken)
 	req.Header.Set("X-Guest-Token", s.guestToken)
 
@@ -59,6 +60,7 @@ func (s *Scraper) refreshGuestToken() error {
 	if err != nil {
 		return err
 	}
+	req.Header.Set("User-Agent", s.userAgent)
 	req.Header.Set("Authorization", "Bearer "+s.bearerToken)
 
 	resp, err := s.client.Do(req)
