@@ -14,6 +14,8 @@ const (
 	graphqlPath   = "/graphql"
 	graphqlPrefix = scheme + "://" + endpoint + graphqlPath
 
+	// TODO
+	apiUserByRestId     = graphqlPrefix + "/mi_IjXgFyr41N9zkszPz9w/UserByRestId"
 	apiUserByScreenName = graphqlPrefix + "/tgMiZwwhWR2sI0KsNsExrA/UserByScreenName"
 	apiFollowing        = graphqlPrefix + "/cocC_CzoxzpwgXr3jhG7DA/Following"
 	apiFollowers        = graphqlPrefix + "/KwJEsSEIHz991Ansf4Y1tQ/Followers"
