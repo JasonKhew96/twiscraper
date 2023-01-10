@@ -3,7 +3,6 @@ package twiscraper
 import (
 	"context"
 	"encoding/json"
-	"errors"
 	"fmt"
 	"net/http"
 	"net/url"
@@ -104,9 +103,9 @@ func (s *Scraper) fetchHomeTimeline(opt fetchOptions, count int, cursor string) 
 	if err != nil {
 		return nil, "", err
 	}
-	if len(homeTimelineTweets.Errors) > 0 {
-		return nil, "", errors.New(homeTimelineTweets.Errors[0].Message)
-	}
+	// if len(homeTimelineTweets.Errors) > 0 {
+	// 	return nil, "", errors.New(homeTimelineTweets.Errors[0].Message)
+	// }
 
 	var tweetResults []entity.ParsedTweet
 	var nextCursor string

@@ -3,7 +3,6 @@ package twiscraper
 import (
 	"context"
 	"encoding/json"
-	"errors"
 	"fmt"
 	"net/http"
 	"net/url"
@@ -166,9 +165,9 @@ func (s *Scraper) fetchFollowers(opt fetchOptions, userId string, count int, cur
 	if err != nil {
 		return nil, "", err
 	}
-	if len(followers.Errors) > 0 {
-		return nil, "", errors.New(followers.Errors[0].Message)
-	}
+	// if len(followers.Errors) > 0 {
+	// 	return nil, "", errors.New(followers.Errors[0].Message)
+	// }
 
 	var userResults []entity.ParsedUser
 	var nextCursor string

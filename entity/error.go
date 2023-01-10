@@ -1,12 +1,12 @@
 package entity
 
 type TwitterError struct {
-	Message   string `json:"error"`
+	Message   string `json:"message"`
 	Locations []struct {
 		Line   int `json:"line"`
 		Column int `json:"column"`
 	} `json:"locations"`
-	Path       []string `json:"path"`
+	Path       []interface{} `json:"path"`
 	Extensions struct {
 		Name    string `json:"name"`
 		Source  string `json:"source"`
