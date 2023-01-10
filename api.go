@@ -32,7 +32,7 @@ func (s *Scraper) requestAPI(req *http.Request, target interface{}) error {
 	req.Header.Set("X-Guest-Token", s.guestToken)
 
 	// use cookie
-	if len(s.cookie) > 0 && len(s.xCsrfToken) > 0 {
+	if s.IsLogined() {
 		req.Header.Set("Cookie", s.cookie)
 		req.Header.Set("x-csrf-token", s.xCsrfToken)
 	}

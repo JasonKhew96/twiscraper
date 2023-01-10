@@ -64,8 +64,8 @@ func (s *Scraper) getHomeTimelineStream(ctx context.Context, opt fetchOptions, c
 }
 
 func (s *Scraper) fetchHomeTimeline(opt fetchOptions, count int, cursor string) ([]entity.ParsedTweet, string, error) {
-	if s.cookie == "" || s.xCsrfToken == "" {
-		return nil, "", fmt.Errorf("cookie and x-csrf-token are required")
+	if !s.IsLogined() {
+		return nil, "", ErrorNotLogined
 	}
 
 	if count > 20 {

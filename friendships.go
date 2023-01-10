@@ -6,6 +6,9 @@ import (
 )
 
 func (s *Scraper) Follow(screenName string) error {
+	if !s.IsLogined() {
+		return ErrorNotLogined
+	}
 	parsedUser, err := s.GetUserByScreenName(screenName)
 	if err != nil {
 		return err
@@ -31,6 +34,9 @@ func (s *Scraper) Follow(screenName string) error {
 }
 
 func (s *Scraper) Unfollow(screenName string) error {
+	if !s.IsLogined() {
+		return ErrorNotLogined
+	}
 	parsedUser, err := s.GetUserByScreenName(screenName)
 	if err != nil {
 		return err

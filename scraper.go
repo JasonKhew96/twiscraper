@@ -1,11 +1,14 @@
 package twiscraper
 
 import (
+	"errors"
 	"net/http"
 	"net/url"
 	"sync"
 	"time"
 )
+
+var ErrorNotLogined = errors.New("cookie and x-csrf-token are required")
 
 type Scraper struct {
 	bearerToken    string
@@ -33,6 +36,10 @@ type ScraperOptions struct {
 
 func (s *Scraper) hasGuestToken() bool {
 	return s.guestToken != ""
+}
+
+func (s *Scraper) IsLogined() bool {
+	return s.cookie != "" && s.xCsrfToken != ""
 }
 
 func New(opts ScraperOptions) (*Scraper, error) {

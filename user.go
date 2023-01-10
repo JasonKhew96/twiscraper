@@ -129,8 +129,8 @@ func (s *Scraper) getFollowersStream(ctx context.Context, opt fetchOptions, scre
 }
 
 func (s *Scraper) fetchFollowers(opt fetchOptions, userId string, count int, cursor string) ([]entity.ParsedUser, string, error) {
-	if s.cookie == "" || s.xCsrfToken == "" {
-		return nil, "", fmt.Errorf("cookie and x-csrf-token are required")
+	if !s.IsLogined() {
+		return nil, "", ErrorNotLogined
 	}
 
 	if count > 20 {
