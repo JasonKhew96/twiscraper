@@ -75,6 +75,7 @@ func (s *Scraper) GetTweetDetail(focalTweetId string) (*entity.ParsedTweet, erro
 					parsedTweet.IsRecommended = tweetEntry.Content.ItemContent.SocialContext != nil
 					return parsedTweet, nil
 				case "TimelineTimelineModule":
+					// TODO
 				default:
 					fmt.Printf("unknown entry type: %s\n", entry.Content.EntryType)
 				}
