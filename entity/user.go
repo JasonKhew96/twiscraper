@@ -159,7 +159,7 @@ type UserResult struct {
 
 type UserByScreenName struct {
 	Errors []TwitterError `json:"errors"`
-	Data struct {
+	Data   struct {
 		User struct {
 			Result UserResult `json:"result"`
 		} `json:"user"`
@@ -252,6 +252,10 @@ func NewFollowersParams(userId string, count int, cursor string) (url.Values, er
 
 // response
 
+type UserResults struct {
+	Result UserResult `json:"result"`
+}
+
 type UserResultEntry struct {
 	EntryId   string `json:"entryId"`
 	SortIndex string `json:"sortIndex"`
@@ -259,12 +263,10 @@ type UserResultEntry struct {
 		EntryType   string `json:"entryType"`
 		TypeName    string `json:"__typename"`
 		ItemContent struct {
-			ItemType    string `json:"itemType"`
-			TypeName    string `json:"__typename"`
-			UserResults struct {
-				Result UserResult `json:"result"`
-			} `json:"user_results"`
-			UserDisplayType string `json:"userDisplayType"`
+			ItemType        string       `json:"itemType"`
+			TypeName        string       `json:"__typename"`
+			UserResults     *UserResults `json:"user_results"`
+			UserDisplayType string       `json:"userDisplayType"`
 		} `json:"itemContent"`
 		ClientEventInfo struct {
 			Component string `json:"component"`
@@ -286,7 +288,7 @@ type TimelineCursorEntry struct {
 
 type FollowersResponse struct {
 	Errors []TwitterError `json:"errors"`
-	Data struct {
+	Data   struct {
 		User struct {
 			Result struct {
 				TypeName string `json:"__typename"`

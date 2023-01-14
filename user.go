@@ -207,6 +207,10 @@ func (s *Scraper) fetchFollowers(opt fetchOptions, userId string, count int, cur
 						s.sugar.Errorln(err)
 						continue
 					}
+					if userResultEntry.Content.ItemContent.UserResults == nil {
+						s.sugar.Errorln("userResults is nil")
+						continue
+					}
 					parsedUser, err := userResultEntry.Content.ItemContent.UserResults.Result.Parse()
 					if err != nil {
 						s.sugar.Errorln(err)
