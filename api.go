@@ -3,6 +3,7 @@ package twiscraper
 import (
 	"encoding/json"
 	"fmt"
+	"io"
 	"io/ioutil"
 	"net/http"
 	"time"
@@ -50,6 +51,15 @@ func (s *Scraper) requestAPI(req *http.Request, target interface{}) error {
 
 	if resp.Header.Get("X-Rate-Limit-Remaining") == "0" {
 		s.guestToken = ""
+	}
+
+	if s.debug {
+		body, err := io.ReadAll(resp.Body)
+		if err != nil {
+			return err
+		}
+		s.sugar.Debugf("request api %s\n%s", req.URL, body)
+		return json.Unmarshal(body, target)
 	}
 
 	return json.NewDecoder(resp.Body).Decode(target)

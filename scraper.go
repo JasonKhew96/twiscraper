@@ -25,6 +25,7 @@ type Scraper struct {
 	userAgent  string
 
 	sugar *zap.SugaredLogger
+	debug bool
 }
 
 type ScraperOptions struct {
@@ -36,6 +37,8 @@ type ScraperOptions struct {
 	Timeout   time.Duration
 	Proxy     string
 	UserAgent string
+
+	Debug bool
 }
 
 func (s *Scraper) hasGuestToken() bool {
@@ -76,8 +79,17 @@ func New(opts ScraperOptions) (*Scraper, error) {
 	if opts.UserAgent != "" {
 		scraper.userAgent = opts.UserAgent
 	}
+	if opts.Debug {
+		scraper.debug = opts.Debug
+	}
 
-	logger, err := zap.NewProduction()
+	var logger *zap.Logger
+	var err error
+	if opts.Debug {
+		logger, err = zap.NewDevelopment()
+	} else {
+		logger, err = zap.NewProduction()
+	}
 	if err != nil {
 		return nil, err
 	}
