@@ -173,12 +173,13 @@ type TweetResult struct {
 			Result UserResult `json:"result"`
 		} `json:"user_results"`
 	} `json:"core"`
-	UnmentionData           interface{} `json:"unmention_data"`
-	EditControl             interface{} `json:"edit_control"`
-	EditPerspective         interface{} `json:"edit_perspective"`
-	IsTranslateable         bool        `json:"is_translateable"`
-	Legacy                  TweetLegacy `json:"legacy"`
-	QuickPromoteEligibility interface{} `json:"quick_promote_eligibility"`
+	UnmentionData           interface{}      `json:"unmention_data"`
+	EditControl             interface{}      `json:"edit_control"`
+	EditPerspective         interface{}      `json:"edit_perspective"`
+	IsTranslateable         bool             `json:"is_translateable"`
+	QuotedStatusResult      *json.RawMessage `json:"quoted_status_result"`
+	Legacy                  TweetLegacy      `json:"legacy"`
+	QuickPromoteEligibility interface{}      `json:"quick_promote_eligibility"`
 	Views                   struct {
 		Count string `json:"count"`
 		State string `json:"state"`
@@ -382,6 +383,8 @@ type ParsedTweet struct {
 	Retweeted         bool
 	IsRetweet         bool
 	RetweetedTweet    *ParsedTweet
+	IsReply           bool
+	RepliedTweet      *ParsedTweet
 	IsRecommended     bool
 	Url               string
 	Views             int
@@ -393,6 +396,23 @@ func (t *TweetResult) Parse() (*ParsedTweet, error) {
 	if err != nil {
 		return nil, err
 	}
+
+	var repliedTweet *ParsedTweet
+	isReply := t.QuotedStatusResult != nil
+	if isReply {
+		var repliedTweetResult struct {
+			Result TweetResult `json:"result"`
+		}
+		err = json.Unmarshal(*t.QuotedStatusResult, &repliedTweetResult)
+		if err != nil {
+			return nil, err
+		}
+		repliedTweet, err = repliedTweetResult.Result.Parse()
+		if err != nil {
+			return nil, err
+		}
+	}
+
 	createdAt, err := time.Parse(time.RubyDate, t.Legacy.CreatedAt)
 	if err != nil {
 		return nil, err
@@ -526,6 +546,8 @@ func (t *TweetResult) Parse() (*ParsedTweet, error) {
 		Retweeted:         t.Legacy.Retweeted,
 		IsRetweet:         isRetweet,
 		RetweetedTweet:    retweetedTweet,
+		IsReply:           isReply,
+		RepliedTweet:      repliedTweet,
 		Url:               fmt.Sprintf("https://twitter.com/%s/status/%s", userResult.ScreenName, t.Legacy.IdStr),
 		Views:             views,
 		ParsedUser:        *userResult,
