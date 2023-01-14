@@ -166,8 +166,9 @@ type TweetLegacy struct {
 }
 
 type TweetResult struct {
-	TypeName string `json:"__typename"`
-	RestId   string `json:"rest_id"`
+	TypeName string       `json:"__typename"`
+	Tweet    *TweetResult `json:"tweet"`
+	RestId   string       `json:"rest_id"`
 	Core     struct {
 		UserResults struct {
 			Result UserResult `json:"result"`
@@ -392,6 +393,10 @@ type ParsedTweet struct {
 }
 
 func (t *TweetResult) Parse() (*ParsedTweet, error) {
+	if t.TypeName == "TweetWithVisibilityResults" { // wtf
+		return t.Tweet.Parse()
+	}
+
 	userResult, err := t.Core.UserResults.Result.Parse()
 	if err != nil {
 		return nil, fmt.Errorf("failed to parse user: %v", err)
