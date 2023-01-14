@@ -64,13 +64,11 @@ func (s *Scraper) GetTweetDetail(focalTweetId string) (*entity.ParsedTweet, erro
 					var tweetEntry entity.TimelineTweetEntry
 					err := json.Unmarshal(entryRaw, &tweetEntry)
 					if err != nil {
-						fmt.Println(err)
-						continue
+						return nil, err
 					}
 					parsedTweet, err := tweetEntry.Content.ItemContent.TweetResults.Result.Parse()
 					if err != nil {
-						fmt.Println(err)
-						continue
+						return nil, err
 					}
 					parsedTweet.IsRecommended = tweetEntry.Content.ItemContent.SocialContext != nil
 					return parsedTweet, nil
