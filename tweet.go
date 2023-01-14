@@ -131,6 +131,7 @@ func (s *Scraper) fetchTimeline(opt fetchOptions, id string, count int, cursor s
 		}
 		switch instruction.Type {
 		case "TimelinePinEntry":
+			// TODO
 			continue
 		case "TimelineClearCache":
 			continue
