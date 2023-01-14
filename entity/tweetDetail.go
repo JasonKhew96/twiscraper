@@ -2,6 +2,7 @@ package entity
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/url"
 )
 
@@ -95,11 +96,11 @@ func NewTweetDetailFeatures() TweetDetailFeatures {
 func NewTweetDetailParams(focalTweetId string) (url.Values, error) {
 	variables, err := json.Marshal(NewTweetDetailVariables(focalTweetId))
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("failed to marshal variables: %v", err)
 	}
 	features, err := json.Marshal(NewTweetDetailFeatures())
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("failed to marshal features: %v", err)
 	}
 	return url.Values{
 		"variables": {string(variables)},

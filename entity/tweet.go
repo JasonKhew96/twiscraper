@@ -309,11 +309,11 @@ func NewUserMediaVariables(userId string, count int, cursor string) UserMediaVar
 func NewUserTweetsParams(userId string, count int, cursor string) (url.Values, error) {
 	variables, err := json.Marshal(NewUserTweetsVariables(userId, count, cursor))
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("failed to marshal variables: %v", err)
 	}
 	features, err := json.Marshal(NewUserTweetsFeatures())
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("failed to marshal features: %v", err)
 	}
 	return url.Values{
 		"variables": {string(variables)},
@@ -324,11 +324,11 @@ func NewUserTweetsParams(userId string, count int, cursor string) (url.Values, e
 func NewUserMediaParams(userId string, count int, cursor string) (url.Values, error) {
 	variables, err := json.Marshal(NewUserMediaVariables(userId, count, cursor))
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("failed to marshal variables: %v", err)
 	}
 	features, err := json.Marshal(NewUserTweetsFeatures())
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("failed to marshal features: %v", err)
 	}
 	return url.Values{
 		"variables": {string(variables)},
@@ -394,7 +394,7 @@ type ParsedTweet struct {
 func (t *TweetResult) Parse() (*ParsedTweet, error) {
 	userResult, err := t.Core.UserResults.Result.Parse()
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("failed to parse user: %v", err)
 	}
 
 	var repliedTweet *ParsedTweet
@@ -405,17 +405,17 @@ func (t *TweetResult) Parse() (*ParsedTweet, error) {
 		}
 		err = json.Unmarshal(*t.QuotedStatusResult, &repliedTweetResult)
 		if err != nil {
-			return nil, err
+			return nil, fmt.Errorf("failed to parse replied tweet: %v", err)
 		}
 		repliedTweet, err = repliedTweetResult.Result.Parse()
 		if err != nil {
-			return nil, err
+			return nil, fmt.Errorf("failed to parse replied tweet: %v", err)
 		}
 	}
 
 	createdAt, err := time.Parse(time.RubyDate, t.Legacy.CreatedAt)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("failed to parse created at: %v", err)
 	}
 
 	fullText := t.Legacy.FullText
@@ -504,11 +504,11 @@ func (t *TweetResult) Parse() (*ParsedTweet, error) {
 		}
 		err = json.Unmarshal(*t.Legacy.RetweetedStatusResult, &retweetResult)
 		if err != nil {
-			return nil, err
+			return nil, fmt.Errorf("failed to parse retweet: %v", err)
 		}
 		retweetedTweet, err = retweetResult.Result.Parse()
 		if err != nil {
-			return nil, err
+			return nil, fmt.Errorf("failed to parse retweet: %v", err)
 		}
 	}
 
@@ -517,7 +517,7 @@ func (t *TweetResult) Parse() (*ParsedTweet, error) {
 	if viewsRaw != "" {
 		views, err = strconv.Atoi(viewsRaw)
 		if err != nil {
-			return nil, err
+			return nil, fmt.Errorf("failed to parse views: %v", err)
 		}
 	}
 

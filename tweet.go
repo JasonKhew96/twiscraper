@@ -99,21 +99,21 @@ func (s *Scraper) fetchTimeline(opt fetchOptions, id string, count int, cursor s
 		return nil, "", fmt.Errorf("invalid fetch option")
 	}
 	if err != nil {
-		return nil, "", err
+		return nil, "", fmt.Errorf("failed to create params: %v", err)
 	}
 	apiUrl, err := url.Parse(u)
 	if err != nil {
-		return nil, "", err
+		return nil, "", fmt.Errorf("failed to parse url: %v", err)
 	}
 	apiUrl.RawQuery = vl.Encode()
 	req, err := http.NewRequest(http.MethodGet, apiUrl.String(), nil)
 	if err != nil {
-		return nil, "", err
+		return nil, "", fmt.Errorf("failed to create request: %v", err)
 	}
 	var timelineTweets entity.TimelineTweetsResponse
 	err = s.requestAPI(req, &timelineTweets)
 	if err != nil {
-		return nil, "", err
+		return nil, "", fmt.Errorf("failed to request api: %v", err)
 	}
 	// if len(timelineTweets.Errors) > 0 {
 	// 	return nil, "", errors.New(timelineTweets.Errors[0].Message)

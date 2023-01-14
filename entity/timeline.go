@@ -2,6 +2,7 @@ package entity
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/url"
 )
 
@@ -95,11 +96,11 @@ func NewHomeLatestTimelineVariables(count int, cursor string) HomeLatestTimeline
 func NewHomeTimelineParams(count int, cursor string) (url.Values, error) {
 	variables, err := json.Marshal(NewHomeTimelineVariables(count, cursor))
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("failed to marshal variables: %v", err)
 	}
 	features, err := json.Marshal(NewUserTweetsFeatures())
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("failed to marshal features: %v", err)
 	}
 	return url.Values{
 		"variables": {string(variables)},
@@ -110,11 +111,11 @@ func NewHomeTimelineParams(count int, cursor string) (url.Values, error) {
 func NewHomeLatestTimelineParams(count int, cursor string) (url.Values, error) {
 	variables, err := json.Marshal(NewHomeLatestTimelineVariables(count, cursor))
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("failed to marshal variables: %v", err)
 	}
 	features, err := json.Marshal(NewUserTweetsFeatures())
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("failed to marshal features: %v", err)
 	}
 	return url.Values{
 		"variables": {string(variables)},

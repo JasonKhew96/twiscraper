@@ -86,22 +86,22 @@ func (s *Scraper) fetchHomeTimeline(opt fetchOptions, count int, cursor string) 
 		return nil, "", fmt.Errorf("invalid fetch option")
 	}
 	if err != nil {
-		return nil, "", err
+		return nil, "", fmt.Errorf("failed to create home timeline params: %v", err)
 	}
 
 	apiUrl, err := url.Parse(u)
 	if err != nil {
-		return nil, "", err
+		return nil, "", fmt.Errorf("failed to parse api url: %v", err)
 	}
 	apiUrl.RawQuery = vl.Encode()
 	req, err := http.NewRequest(http.MethodGet, apiUrl.String(), nil)
 	if err != nil {
-		return nil, "", err
+		return nil, "", fmt.Errorf("failed to create request: %v", err)
 	}
 	var homeTimelineTweets entity.HomeTimelineResponse
 	err = s.requestAPI(req, &homeTimelineTweets)
 	if err != nil {
-		return nil, "", err
+		return nil, "", fmt.Errorf("failed to request api: %v", err)
 	}
 	// if len(homeTimelineTweets.Errors) > 0 {
 	// 	return nil, "", errors.New(homeTimelineTweets.Errors[0].Message)

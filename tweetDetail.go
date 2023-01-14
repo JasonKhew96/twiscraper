@@ -13,21 +13,21 @@ import (
 func (s *Scraper) GetTweetDetail(focalTweetId string) (*entity.ParsedTweet, error) {
 	vl, err := entity.NewTweetDetailParams(focalTweetId)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("failed to create tweet detail params: %v", err)
 	}
 	apiUrl, err := url.Parse(apiTweetDetail)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("failed to parse tweet detail url: %v", err)
 	}
 	apiUrl.RawQuery = vl.Encode()
 	req, err := http.NewRequest(http.MethodGet, apiUrl.String(), nil)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("failed to create request: %v", err)
 	}
 	var tweetDetailResponse entity.TweetDetailResponse
 	err = s.requestAPI(req, &tweetDetailResponse)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("failed to request api: %v", err)
 	}
 	// if len(tweetDetailResponse.Errors) > 0 {
 	// 	return nil, errors.New(tweetDetailResponse.Errors[0].Message)
@@ -64,11 +64,11 @@ func (s *Scraper) GetTweetDetail(focalTweetId string) (*entity.ParsedTweet, erro
 					var tweetEntry entity.TimelineTweetEntry
 					err := json.Unmarshal(entryRaw, &tweetEntry)
 					if err != nil {
-						return nil, err
+						return nil, fmt.Errorf("failed to unmarshal tweet entry: %v", err)
 					}
 					parsedTweet, err := tweetEntry.Content.ItemContent.TweetResults.Result.Parse()
 					if err != nil {
-						return nil, err
+						return nil, fmt.Errorf("failed to parse tweet: %v", err)
 					}
 					parsedTweet.IsRecommended = tweetEntry.Content.ItemContent.SocialContext != nil
 					return parsedTweet, nil

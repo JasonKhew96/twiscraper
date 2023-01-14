@@ -2,6 +2,7 @@ package entity
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/url"
 	"strings"
 	"time"
@@ -42,11 +43,11 @@ func NewUserByScreenNameFeatures() UserByScreenNameFeatures {
 func NewUserByScreenNameParams(screenName string) (url.Values, error) {
 	variables, err := json.Marshal(NewUserByScreenNameVariables(screenName))
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("failed to marshal variables: %v", err)
 	}
 	features, err := json.Marshal(NewUserByScreenNameFeatures())
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("failed to marshal features: %v", err)
 	}
 	return url.Values{
 		"variables": {string(variables)},
@@ -237,11 +238,11 @@ func NewFollowersFeatures() FollowersFeatures {
 func NewFollowersParams(userId string, count int, cursor string) (url.Values, error) {
 	variables, err := json.Marshal(NewFollowersVariables(userId, count, cursor))
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("failed to marshal variables: %v", err)
 	}
 	features, err := json.Marshal(NewFollowersFeatures())
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("failed to marshal features: %v", err)
 	}
 	return url.Values{
 		"variables": {string(variables)},
@@ -331,7 +332,7 @@ type ParsedUser struct {
 func (u *UserResult) Parse() (*ParsedUser, error) {
 	createdAt, err := time.Parse(time.RubyDate, u.Legacy.CreatedAt)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("failed to parse created_at: %v", err)
 	}
 	description := u.Legacy.Description
 	for _, entity := range u.Legacy.Entities.Description.Urls {

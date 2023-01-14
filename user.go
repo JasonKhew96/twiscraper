@@ -23,21 +23,21 @@ type FollowersResult struct {
 func (s *Scraper) GetUserByScreenName(screenName string) (*entity.ParsedUser, error) {
 	vl, err := entity.NewUserByScreenNameParams(screenName)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("failed to create params: %v", err)
 	}
 	apiUrl, err := url.Parse(apiUserByScreenName)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("failed to parse url: %v", err)
 	}
 	apiUrl.RawQuery = vl.Encode()
 	req, err := http.NewRequest(http.MethodGet, apiUrl.String(), nil)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("failed to create request: %v", err)
 	}
 	var user entity.UserByScreenName
 	err = s.requestAPI(req, &user)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("failed to request api: %v", err)
 	}
 	// if len(user.Errors) > 0 {
 	// 	return nil, errors.New(user.Errors[0].Message)
@@ -62,7 +62,7 @@ func (s *Scraper) GetUserIdByScreenName(screenName string) (string, error) {
 
 	user, err := s.GetUserByScreenName(screenName)
 	if err != nil {
-		return "", err
+		return "", fmt.Errorf("failed to get user by screen name: %v", err)
 	}
 
 	cachedUserIds.Store(screenName, user.UserId)
@@ -143,7 +143,7 @@ func (s *Scraper) fetchFollowers(opt fetchOptions, userId string, count int, cur
 
 	vl, err := entity.NewFollowersParams(userId, count, cursor)
 	if err != nil {
-		return nil, "", err
+		return nil, "", fmt.Errorf("failed to create params: %v", err)
 	}
 	var u string
 	switch opt {
@@ -154,17 +154,17 @@ func (s *Scraper) fetchFollowers(opt fetchOptions, userId string, count int, cur
 	}
 	apiUrl, err := url.Parse(u)
 	if err != nil {
-		return nil, "", err
+		return nil, "", fmt.Errorf("failed to parse url: %v", err)
 	}
 	apiUrl.RawQuery = vl.Encode()
 	req, err := http.NewRequest(http.MethodGet, apiUrl.String(), nil)
 	if err != nil {
-		return nil, "", err
+		return nil, "", fmt.Errorf("failed to create request: %v", err)
 	}
 	var followers entity.FollowersResponse
 	err = s.requestAPI(req, &followers)
 	if err != nil {
-		return nil, "", err
+		return nil, "", fmt.Errorf("failed to request api: %v", err)
 	}
 	// if len(followers.Errors) > 0 {
 	// 	return nil, "", errors.New(followers.Errors[0].Message)

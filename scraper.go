@@ -2,6 +2,7 @@ package twiscraper
 
 import (
 	"errors"
+	"fmt"
 	"net/http"
 	"net/url"
 	"sync"
@@ -65,7 +66,7 @@ func New(opts ScraperOptions) (*Scraper, error) {
 	if opts.Proxy != "" {
 		u, err := url.Parse(opts.Proxy)
 		if err != nil {
-			return nil, err
+			return nil, fmt.Errorf("invalid proxy url: %v", err)
 		}
 		scraper.client = &http.Client{
 			Transport: &http.Transport{
@@ -91,7 +92,7 @@ func New(opts ScraperOptions) (*Scraper, error) {
 		logger, err = zap.NewProduction()
 	}
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("failed to initialize logger: %v", err)
 	}
 	scraper.sugar = logger.Sugar()
 	scraper.sugar.Infoln("Scraper initialized")
