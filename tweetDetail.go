@@ -37,7 +37,7 @@ func (s *Scraper) GetTweetDetail(focalTweetId string) (*entity.ParsedTweet, erro
 		var instruction entity.Instruction
 		err := json.Unmarshal(instructionRaw, &instruction)
 		if err != nil {
-			fmt.Println(err)
+			s.sugar.Errorln(err)
 			continue
 		}
 		switch instruction.Type {
@@ -49,14 +49,14 @@ func (s *Scraper) GetTweetDetail(focalTweetId string) (*entity.ParsedTweet, erro
 			var timelineAddEntries entity.TimelineInstructionAddEntries
 			err := json.Unmarshal(instructionRaw, &timelineAddEntries)
 			if err != nil {
-				fmt.Println(err)
+				s.sugar.Errorln(err)
 				continue
 			}
 			for _, entryRaw := range timelineAddEntries.Entries {
 				var entry entity.Entry
 				err := json.Unmarshal(entryRaw, &entry)
 				if err != nil {
-					fmt.Println(err)
+					s.sugar.Errorln(err)
 					continue
 				}
 				switch entry.Content.EntryType {

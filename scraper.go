@@ -6,6 +6,8 @@ import (
 	"net/url"
 	"sync"
 	"time"
+
+	"go.uber.org/zap"
 )
 
 var ErrorNotLogined = errors.New("cookie and x-csrf-token are required")
@@ -21,6 +23,8 @@ type Scraper struct {
 	cookie     string
 	xCsrfToken string
 	userAgent  string
+
+	sugar *zap.SugaredLogger
 }
 
 type ScraperOptions struct {
@@ -72,5 +76,13 @@ func New(opts ScraperOptions) (*Scraper, error) {
 	if opts.UserAgent != "" {
 		scraper.userAgent = opts.UserAgent
 	}
+
+	logger, err := zap.NewProduction()
+	if err != nil {
+		return nil, err
+	}
+	scraper.sugar = logger.Sugar()
+	scraper.sugar.Infoln("Scraper initialized")
+
 	return &scraper, nil
 }

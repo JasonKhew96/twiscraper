@@ -177,7 +177,7 @@ func (s *Scraper) fetchFollowers(opt fetchOptions, userId string, count int, cur
 		var instruction entity.Instruction
 		err := json.Unmarshal(instructionRaw, &instruction)
 		if err != nil {
-			fmt.Println(err)
+			s.sugar.Errorln(err)
 			continue
 		}
 		switch instruction.Type {
@@ -189,14 +189,14 @@ func (s *Scraper) fetchFollowers(opt fetchOptions, userId string, count int, cur
 			var timelineAddEntries entity.TimelineInstructionAddEntries
 			err := json.Unmarshal(instructionRaw, &timelineAddEntries)
 			if err != nil {
-				fmt.Println(err)
+				s.sugar.Errorln(err)
 				continue
 			}
 			for _, entryRaw := range timelineAddEntries.Entries {
 				var entry entity.Entry
 				err := json.Unmarshal(entryRaw, &entry)
 				if err != nil {
-					fmt.Println(err)
+					s.sugar.Errorln(err)
 					continue
 				}
 				switch entry.Content.EntryType {
@@ -204,12 +204,12 @@ func (s *Scraper) fetchFollowers(opt fetchOptions, userId string, count int, cur
 					var userResultEntry entity.UserResultEntry
 					err := json.Unmarshal(entryRaw, &userResultEntry)
 					if err != nil {
-						fmt.Println(err)
+						s.sugar.Errorln(err)
 						continue
 					}
 					parsedUser, err := userResultEntry.Content.ItemContent.UserResults.Result.Parse()
 					if err != nil {
-						fmt.Println(err)
+						s.sugar.Errorln(err)
 						continue
 					}
 					userResults = append(userResults, *parsedUser)
@@ -217,7 +217,7 @@ func (s *Scraper) fetchFollowers(opt fetchOptions, userId string, count int, cur
 					var cursorEntry entity.TimelineCursorEntry
 					err := json.Unmarshal(entryRaw, &cursorEntry)
 					if err != nil {
-						fmt.Println(err)
+						s.sugar.Errorln(err)
 						continue
 					}
 					if cursorEntry.Content.CursorType == "Bottom" {

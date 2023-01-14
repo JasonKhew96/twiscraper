@@ -126,7 +126,7 @@ func (s *Scraper) fetchTimeline(opt fetchOptions, id string, count int, cursor s
 		var instruction entity.Instruction
 		err := json.Unmarshal(instructionRaw, &instruction)
 		if err != nil {
-			fmt.Println(err)
+			s.sugar.Errorln(err)
 			continue
 		}
 		switch instruction.Type {
@@ -141,14 +141,14 @@ func (s *Scraper) fetchTimeline(opt fetchOptions, id string, count int, cursor s
 			var timelineAddEntries entity.TimelineInstructionAddEntries
 			err := json.Unmarshal(instructionRaw, &timelineAddEntries)
 			if err != nil {
-				fmt.Println(err)
+				s.sugar.Errorln(err)
 				continue
 			}
 			for _, entryRaw := range timelineAddEntries.Entries {
 				var entry entity.Entry
 				err := json.Unmarshal(entryRaw, &entry)
 				if err != nil {
-					fmt.Println(err)
+					s.sugar.Errorln(err)
 					continue
 				}
 				switch entry.Content.EntryType {
@@ -156,12 +156,12 @@ func (s *Scraper) fetchTimeline(opt fetchOptions, id string, count int, cursor s
 					var tweetEntry entity.TimelineTweetEntry
 					err := json.Unmarshal(entryRaw, &tweetEntry)
 					if err != nil {
-						fmt.Println(err)
+						s.sugar.Errorln(err)
 						continue
 					}
 					parsedTweet, err := tweetEntry.Content.ItemContent.TweetResults.Result.Parse()
 					if err != nil {
-						fmt.Println(err)
+						s.sugar.Errorln(err)
 						continue
 					}
 					parsedTweet.IsRecommended = tweetEntry.Content.ItemContent.SocialContext != nil
@@ -170,7 +170,7 @@ func (s *Scraper) fetchTimeline(opt fetchOptions, id string, count int, cursor s
 					var cursorEntry entity.TimelineCursorEntry
 					err := json.Unmarshal(entryRaw, &cursorEntry)
 					if err != nil {
-						fmt.Println(err)
+						s.sugar.Errorln(err)
 						continue
 					}
 					if cursorEntry.Content.CursorType == "Bottom" {
