@@ -140,29 +140,27 @@ type MediaEntities struct {
 	Symbols []interface{} `json:"symbols"`
 }
 
-type RetweetedStatusResult = json.RawMessage
-
 type TweetLegacy struct {
-	CreatedAt                 string                 `json:"created_at"`
-	ConversationIdStr         string                 `json:"conversation_id_str"`
-	DisplayTextRange          []int                  `json:"display_text_range"`
-	Entities                  MediaEntities          `json:"entities"`
-	ExtendedEntities          MediaEntities          `json:"extended_entities"`
-	FavoriteCount             int                    `json:"favorite_count"`
-	Favorited                 bool                   `json:"favorited"`
-	FullText                  string                 `json:"full_text"`
-	IsQuoteStatus             bool                   `json:"is_quote_status"`
-	Lang                      string                 `json:"lang"`
-	PossiblySensitive         bool                   `json:"possibly_sensitive"`
-	PossiblySensitiveEditable bool                   `json:"possibly_sensitive_editable"`
-	QuoteCount                int                    `json:"quote_count"`
-	ReplyCount                int                    `json:"reply_count"`
-	RetweetCount              int                    `json:"retweet_count"`
-	Retweeted                 bool                   `json:"retweeted"`
-	Source                    string                 `json:"source"`
-	UserIdStr                 string                 `json:"user_id_str"`
-	IdStr                     string                 `json:"id_str"`
-	RetweetedStatusResult     *RetweetedStatusResult `json:"retweeted_status_result"`
+	CreatedAt                 string        `json:"created_at"`
+	ConversationIdStr         string        `json:"conversation_id_str"`
+	DisplayTextRange          []int         `json:"display_text_range"`
+	Entities                  MediaEntities `json:"entities"`
+	ExtendedEntities          MediaEntities `json:"extended_entities"`
+	FavoriteCount             int           `json:"favorite_count"`
+	Favorited                 bool          `json:"favorited"`
+	FullText                  string        `json:"full_text"`
+	IsQuoteStatus             bool          `json:"is_quote_status"`
+	Lang                      string        `json:"lang"`
+	PossiblySensitive         bool          `json:"possibly_sensitive"`
+	PossiblySensitiveEditable bool          `json:"possibly_sensitive_editable"`
+	QuoteCount                int           `json:"quote_count"`
+	ReplyCount                int           `json:"reply_count"`
+	RetweetCount              int           `json:"retweet_count"`
+	Retweeted                 bool          `json:"retweeted"`
+	Source                    string        `json:"source"`
+	UserIdStr                 string        `json:"user_id_str"`
+	IdStr                     string        `json:"id_str"`
+	RetweetedStatusResult     *TweetResults `json:"retweeted_status_result"`
 }
 
 type TweetResult struct {
@@ -174,13 +172,13 @@ type TweetResult struct {
 			Result UserResult `json:"result"`
 		} `json:"user_results"`
 	} `json:"core"`
-	UnmentionData           interface{}      `json:"unmention_data"`
-	EditControl             interface{}      `json:"edit_control"`
-	EditPerspective         interface{}      `json:"edit_perspective"`
-	IsTranslateable         bool             `json:"is_translateable"`
-	QuotedStatusResult      *json.RawMessage `json:"quoted_status_result"`
-	Legacy                  TweetLegacy      `json:"legacy"`
-	QuickPromoteEligibility interface{}      `json:"quick_promote_eligibility"`
+	UnmentionData           interface{}   `json:"unmention_data"`
+	EditControl             interface{}   `json:"edit_control"`
+	EditPerspective         interface{}   `json:"edit_perspective"`
+	IsTranslateable         bool          `json:"is_translateable"`
+	QuotedStatusResult      *TweetResults `json:"quoted_status_result"`
+	Legacy                  TweetLegacy   `json:"legacy"`
+	QuickPromoteEligibility interface{}   `json:"quick_promote_eligibility"`
 	Views                   struct {
 		Count string `json:"count"`
 		State string `json:"state"`
@@ -218,7 +216,7 @@ type TimelineTweetEntry struct {
 		ItemContent struct {
 			ItemType         string         `json:"itemType"`
 			TypeName         string         `json:"__typename"`
-			TweetResults     *TweetResults   `json:"tweet_results"`
+			TweetResults     *TweetResults  `json:"tweet_results"`
 			TweetDisplayType string         `json:"tweet_display_type"`
 			SocialContext    *SocialContext `json:"socialContext"`
 			ReactiveTriggers interface{}    `json:"reactive_triggers"`
@@ -407,14 +405,7 @@ func (t *TweetResult) Parse() (*ParsedTweet, error) {
 	var repliedTweet *ParsedTweet
 	isReply := t.QuotedStatusResult != nil
 	if isReply {
-		var repliedTweetResult struct {
-			Result TweetResult `json:"result"`
-		}
-		err = json.Unmarshal(*t.QuotedStatusResult, &repliedTweetResult)
-		if err != nil {
-			return nil, fmt.Errorf("failed to parse replied tweet: %v", err)
-		}
-		repliedTweet, err = repliedTweetResult.Result.Parse()
+		repliedTweet, err = t.QuotedStatusResult.Result.Parse()
 		if err != nil {
 			return nil, fmt.Errorf("failed to parse replied tweet: %v", err)
 		}
@@ -506,14 +497,7 @@ func (t *TweetResult) Parse() (*ParsedTweet, error) {
 	isRetweet := t.Legacy.RetweetedStatusResult != nil
 	var retweetedTweet *ParsedTweet
 	if isRetweet {
-		var retweetResult struct {
-			Result TweetResult `json:"result"`
-		}
-		err = json.Unmarshal(*t.Legacy.RetweetedStatusResult, &retweetResult)
-		if err != nil {
-			return nil, fmt.Errorf("failed to parse retweet: %v", err)
-		}
-		retweetedTweet, err = retweetResult.Result.Parse()
+		retweetedTweet, err = t.Legacy.RetweetedStatusResult.Result.Parse()
 		if err != nil {
 			return nil, fmt.Errorf("failed to parse retweet: %v", err)
 		}
