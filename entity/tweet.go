@@ -207,6 +207,9 @@ type TweetResults struct {
 	Result TweetResult `json:"result"`
 }
 
+type PromotedMetadata struct {
+}
+
 type TimelineTweetEntry struct {
 	EntryId   string `json:"entryId"`
 	SortIndex string `json:"sortIndex"`
@@ -214,12 +217,13 @@ type TimelineTweetEntry struct {
 		EntryType   string `json:"entryType"`
 		TypeName    string `json:"__typename"`
 		ItemContent struct {
-			ItemType         string         `json:"itemType"`
-			TypeName         string         `json:"__typename"`
-			TweetResults     *TweetResults  `json:"tweet_results"`
-			TweetDisplayType string         `json:"tweetDisplayType"`
-			SocialContext    *SocialContext `json:"socialContext"`
-			ReactiveTriggers interface{}    `json:"reactive_triggers"`
+			ItemType         string            `json:"itemType"`
+			TypeName         string            `json:"__typename"`
+			TweetResults     *TweetResults     `json:"tweet_results"`
+			TweetDisplayType string            `json:"tweetDisplayType"`
+			PromotedMetadata *PromotedMetadata `json:"promotedMetadata"`
+			SocialContext    *SocialContext    `json:"socialContext"`
+			ReactiveTriggers interface{}       `json:"reactive_triggers"`
 		} `json:"itemContent"`
 		FeedbackInfo    interface{} `json:"feedbackInfo"`
 		ClientEventInfo interface{} `json:"clientEventInfo"`

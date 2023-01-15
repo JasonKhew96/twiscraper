@@ -148,6 +148,9 @@ func (s *Scraper) fetchHomeTimeline(opt fetchOptions, count int, cursor string) 
 						s.sugar.Errorln("tweet results is nil")
 						continue
 					}
+					if tweetEntry.Content.ItemContent.PromotedMetadata != nil {
+						continue
+					}
 					parsedTweet, err := tweetEntry.Content.ItemContent.TweetResults.Result.Parse()
 					if err != nil {
 						s.sugar.Errorln(err)

@@ -69,6 +69,9 @@ func (s *Scraper) GetTweetDetail(focalTweetId string) (*entity.ParsedTweet, erro
 					if tweetEntry.Content.ItemContent.TweetResults == nil {
 						return nil, fmt.Errorf("tweet entry has no tweet results")
 					}
+					if tweetEntry.Content.ItemContent.PromotedMetadata != nil {
+						return nil, fmt.Errorf("tweet is promoted tweet")
+					}
 					parsedTweet, err := tweetEntry.Content.ItemContent.TweetResults.Result.Parse()
 					if err != nil {
 						return nil, fmt.Errorf("failed to parse tweet: %v", err)
