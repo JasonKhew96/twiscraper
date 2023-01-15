@@ -217,7 +217,7 @@ type TimelineTweetEntry struct {
 			ItemType         string         `json:"itemType"`
 			TypeName         string         `json:"__typename"`
 			TweetResults     *TweetResults  `json:"tweet_results"`
-			TweetDisplayType string         `json:"tweet_display_type"`
+			TweetDisplayType string         `json:"tweetDisplayType"`
 			SocialContext    *SocialContext `json:"socialContext"`
 			ReactiveTriggers interface{}    `json:"reactive_triggers"`
 		} `json:"itemContent"`
