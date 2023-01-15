@@ -122,6 +122,8 @@ func (s *Scraper) fetchHomeTimeline(opt fetchOptions, count int, cursor string) 
 			continue
 		case "TimelineTerminateTimeline":
 			continue
+		case "TimelineShowCover":
+			continue
 		case "TimelineAddEntries":
 			var timelineAddEntries entity.TimelineInstructionAddEntries
 			err := json.Unmarshal(instructionRaw, &timelineAddEntries)
