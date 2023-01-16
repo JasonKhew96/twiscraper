@@ -3,6 +3,8 @@ package twiscraper
 import (
 	"fmt"
 	"net/http"
+
+	"github.com/JasonKhew96/twiscraper/entity"
 )
 
 func (s *Scraper) Follow(screenName string) error {
@@ -26,14 +28,15 @@ func (s *Scraper) Follow(screenName string) error {
 	q.Add("user_id", parsedUser.UserId)
 	req.URL.RawQuery = q.Encode()
 
-	err = s.requestAPI(req, nil)
+	var friendships entity.Friendships
+	err = s.requestAPI(req, &friendships)
 	if err != nil {
 		return err
 	}
 	return nil
 }
 
-func (s *Scraper) Unfollow(screenName string) error {
+func (s *Scraper) UnFollow(screenName string) error {
 	if !s.IsLogined() {
 		return ErrorNotLogined
 	}
@@ -54,7 +57,8 @@ func (s *Scraper) Unfollow(screenName string) error {
 	q.Add("user_id", parsedUser.UserId)
 	req.URL.RawQuery = q.Encode()
 
-	err = s.requestAPI(req, nil)
+	var friendships entity.Friendships
+	err = s.requestAPI(req, &friendships)
 	if err != nil {
 		return err
 	}

@@ -29,6 +29,6 @@ const (
 
 	apiTweetDetail = graphqlPrefix + "/d9VslTaZvKUSOh88ntOT_g/TweetDetail"
 
-	apiFriendShipsCreate  = scheme + "://" + endpoint + "/i/api/1.1/friendships/create.json"
-	apiFriendshipsDestroy = scheme + "://" + endpoint + "/i/api/1.1/friendships/destroy.json"
+	apiFriendShipsCreate  = scheme + "://" + endpoint + "/1.1/friendships/create.json"
+	apiFriendshipsDestroy = scheme + "://" + endpoint + "/1.1/friendships/destroy.json"
 )

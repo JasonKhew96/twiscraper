@@ -2,7 +2,7 @@ package entity
 
 // response
 
-type FriendShips struct {
+type Friendships struct {
 	ID          int64  `json:"id"`
 	IDStr       string `json:"id_str"`
 	Name        string `json:"name"`
