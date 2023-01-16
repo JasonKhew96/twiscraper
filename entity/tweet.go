@@ -3,6 +3,7 @@ package entity
 import (
 	"encoding/json"
 	"fmt"
+	"html"
 	"net/url"
 	"strconv"
 	"strings"
@@ -420,7 +421,7 @@ func (t *TweetResult) Parse() (*ParsedTweet, error) {
 		return nil, fmt.Errorf("failed to parse created at: %v", err)
 	}
 
-	fullText := t.Legacy.FullText
+	fullText := html.UnescapeString(t.Legacy.FullText)
 
 	var medias []ParsedMedia
 	extendedEntities := t.Legacy.ExtendedEntities
