@@ -53,16 +53,12 @@ func (s *Scraper) requestAPI(req *http.Request, target interface{}) error {
 		s.guestToken = ""
 	}
 
-	if s.debug {
-		body, err := io.ReadAll(resp.Body)
-		if err != nil {
-			return err
-		}
-		s.sugar.Debugf("request api %s\n%s", req.URL, body)
-		return json.Unmarshal(body, target)
+	body, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return err
 	}
-
-	return json.NewDecoder(resp.Body).Decode(target)
+	s.sugar.Debugf("request api %s\n%s", req.URL, body)
+	return json.Unmarshal(body, target)
 }
 
 func (s *Scraper) refreshGuestToken() error {
