@@ -464,7 +464,7 @@ func (t *TweetResult) Parse() (*ParsedTweet, error) {
 				DurationMs:    mediaVideo.VideoInfo.DurationMillis,
 			}
 			if len(mediaVideo.VideoInfo.Variants) > 0 {
-				maxBitrate := 0
+				maxBitrate := -1
 				for _, variant := range mediaVideo.VideoInfo.Variants {
 					if variant.Bitrate > maxBitrate {
 						maxBitrate = variant.Bitrate
