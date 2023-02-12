@@ -27,7 +27,7 @@ const (
 	apiHomeTimeline       = graphqlPrefix + "/XMoTnsLCI_a4DyvHNLSoKQ/HomeTimeline"
 	apiHomeLatestTimeline = graphqlPrefix + "/kM-kIqajFOTGQLsLXv8YxQ/HomeLatestTimeline"
 
-	apiTweetDetail = graphqlPrefix + "/d9VslTaZvKUSOh88ntOT_g/TweetDetail"
+	apiTweetDetail = graphqlPrefix + "/VaihYjIIeVg4gfvwMgQsUA/TweetDetail"
 
 	apiFriendShipsCreate  = scheme + "://" + endpoint + "/1.1/friendships/create.json"
 	apiFriendshipsDestroy = scheme + "://" + endpoint + "/1.1/friendships/destroy.json"

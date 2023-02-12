@@ -164,6 +164,15 @@ type TweetLegacy struct {
 	RetweetedStatusResult     *TweetResults `json:"retweeted_status_result"`
 }
 
+type NoteTweet struct {
+	NoteTweetResults struct {
+		Result struct {
+			Text      string        `json:"text"`
+			EntitySet MediaEntities `json:"entity_set"`
+		} `json:"result"`
+	} `json:"note_tweet_results"`
+}
+
 type TweetResult struct {
 	TypeName string       `json:"__typename"`
 	Tweet    *TweetResult `json:"tweet"`
@@ -179,6 +188,7 @@ type TweetResult struct {
 	IsTranslateable         bool          `json:"is_translateable"`
 	QuotedStatusResult      *TweetResults `json:"quoted_status_result"`
 	Legacy                  TweetLegacy   `json:"legacy"`
+	NoteTweet               *NoteTweet    `json:"note_tweet"`
 	QuickPromoteEligibility interface{}   `json:"quick_promote_eligibility"`
 	Views                   struct {
 		Count string `json:"count"`
@@ -421,10 +431,17 @@ func (t *TweetResult) Parse() (*ParsedTweet, error) {
 		return nil, fmt.Errorf("failed to parse created at: %v", err)
 	}
 
-	fullText := html.UnescapeString(t.Legacy.FullText)
+	var fullText string
+	var extendedEntities MediaEntities
+	if t.NoteTweet != nil {
+		fullText = t.NoteTweet.NoteTweetResults.Result.Text
+		extendedEntities = t.NoteTweet.NoteTweetResults.Result.EntitySet
+	} else {
+		fullText = html.UnescapeString(t.Legacy.FullText)
+		extendedEntities = t.Legacy.ExtendedEntities
+	}
 
 	var medias []ParsedMedia
-	extendedEntities := t.Legacy.ExtendedEntities
 	for i, mediaRaw := range extendedEntities.Media {
 		var media MediaType
 		err = json.Unmarshal(mediaRaw, &media)
@@ -480,9 +497,8 @@ func (t *TweetResult) Parse() (*ParsedTweet, error) {
 		}
 	}
 
-	entities := t.Legacy.Entities
 	var userMentions []UserMentions
-	for _, entity := range entities.UserMentions {
+	for _, entity := range extendedEntities.UserMentions {
 		userMentions = append(userMentions, UserMentions{
 			UserId:     entity.IdStr,
 			Name:       entity.Name,
@@ -490,12 +506,12 @@ func (t *TweetResult) Parse() (*ParsedTweet, error) {
 		})
 	}
 	var urls []string
-	for _, entity := range entities.Urls {
+	for _, entity := range extendedEntities.Urls {
 		fullText = strings.ReplaceAll(fullText, entity.Url, entity.ExpandedUrl)
 		urls = append(urls, entity.ExpandedUrl)
 	}
 	var hashtags []string
-	for _, entity := range entities.Hashtags {
+	for _, entity := range extendedEntities.Hashtags {
 		hashtags = append(hashtags, entity.Text)
 	}
 
