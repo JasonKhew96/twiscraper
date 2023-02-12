@@ -16,16 +16,16 @@ const (
 	graphqlPrefix = scheme + "://" + endpoint + graphqlPath
 
 	// TODO
-	apiUserByRestId     = graphqlPrefix + "/mi_IjXgFyr41N9zkszPz9w/UserByRestId"
-	apiUserByScreenName = graphqlPrefix + "/tgMiZwwhWR2sI0KsNsExrA/UserByScreenName"
-	apiFollowing        = graphqlPrefix + "/cocC_CzoxzpwgXr3jhG7DA/Following"
-	apiFollowers        = graphqlPrefix + "/KwJEsSEIHz991Ansf4Y1tQ/Followers"
+	apiUserByRestId     = graphqlPrefix + "/gUIQEk2xDGzQTX8Ii0Yesw/UserByRestId"
+	apiUserByScreenName = graphqlPrefix + "/rePnxwe9LZ51nQ7Sn_xN_A/UserByScreenName"
+	apiFollowing        = graphqlPrefix + "/wh5eBj-w6PPSzTSbgrlHzw/Following"
+	apiFollowers        = graphqlPrefix + "/EcJ6iHzKpwDjpC0Dm1Gkhw/Followers"
 
-	apiUserTweets = graphqlPrefix + "/whN_WW_HT--6SW2bhDcx4Q/UserTweets"
-	apiUserMedia  = graphqlPrefix + "/QqRNmKWm3uTs75PCYTGkFw/UserMedia"
+	apiUserTweets = graphqlPrefix + "/rCpYpqplOq3UJ2p6Oxy3tw/UserTweets"
+	apiUserMedia  = graphqlPrefix + "/ghc-7mU9EvRC54PiccAsCA/UserMedia"
 
-	apiHomeTimeline       = graphqlPrefix + "/XMoTnsLCI_a4DyvHNLSoKQ/HomeTimeline"
-	apiHomeLatestTimeline = graphqlPrefix + "/kM-kIqajFOTGQLsLXv8YxQ/HomeLatestTimeline"
+	apiHomeTimeline       = graphqlPrefix + "/6VUR2qFhg6jw55JEvJEmmA/HomeTimeline"
+	apiHomeLatestTimeline = graphqlPrefix + "/vxwgV-TdXnjj9AscrP0mTA/HomeLatestTimeline"
 
 	apiTweetDetail = graphqlPrefix + "/VaihYjIIeVg4gfvwMgQsUA/TweetDetail"
 

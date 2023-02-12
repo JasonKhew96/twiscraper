@@ -29,15 +29,17 @@ type UserTweetsVariables struct {
 
 type UserTweetsFeatures struct {
 	ResponsiveWebTwitterBlueVerifiedBadgeIsEnabled                 bool `json:"responsive_web_twitter_blue_verified_badge_is_enabled"`
+	ResponsiveWebGraphqlExcludeDirectiveEnabled                    bool `json:"responsive_web_graphql_exclude_directive_enabled"`
 	VerifiedPhoneLabelEnabled                                      bool `json:"verified_phone_label_enabled"`
 	ResponsiveWebGraphqlTimelineNavigationEnabled                  bool `json:"responsive_web_graphql_timeline_navigation_enabled"`
-	ViewCountsPublicVisibilityEnabled                              bool `json:"view_counts_public_visibility_enabled"`
-	ViewCountsEverywhereApiEnabled                                 bool `json:"view_counts_everywhere_api_enabled"`
+	ResponsiveWebGraphqlSkipUserProfileImageExtensionsEnabled      bool `json:"responsive_web_graphql_skip_user_profile_image_extensions_enabled"`
 	TweetypieUnmentionOptimizationEnabled                          bool `json:"tweetypie_unmention_optimization_enabled"`
-	ResponsiveWebUcGqlEnabled                                      bool `json:"responsive_web_uc_gql_enabled"`
 	VibeApiEnabled                                                 bool `json:"vibe_api_enabled"`
 	ResponsiveWebEditTweetApiEnabled                               bool `json:"responsive_web_edit_tweet_api_enabled"`
 	GraphqlIsTranslatableRwebTweetIsTranslatableEnabled            bool `json:"graphql_is_translatable_rweb_tweet_is_translatable_enabled"`
+	ViewCountsEverywhereApiEnabled                                 bool `json:"view_counts_everywhere_api_enabled"`
+	LongformNotetweetsConsumptionEnabled                           bool `json:"longform_notetweets_consumption_enabled"`
+	FreedomOfSpeechNotReachAppealLabelEnabled                      bool `json:"freedom_of_speech_not_reach_appeal_label_enabled"`
 	StandardizedNudgesMisinfo                                      bool `json:"standardized_nudges_misinfo"`
 	TweetWithVisibilityResultsPreferGqlLimitedActionsPolicyEnabled bool `json:"tweet_with_visibility_results_prefer_gql_limited_actions_policy_enabled"`
 	InteractiveTextEnabled                                         bool `json:"interactive_text_enabled"`
@@ -284,20 +286,22 @@ func NewUserTweetsVariables(userId string, count int, cursor string) UserTweetsV
 func NewUserTweetsFeatures() UserTweetsFeatures {
 	return UserTweetsFeatures{
 		ResponsiveWebTwitterBlueVerifiedBadgeIsEnabled:                 true,
+		ResponsiveWebGraphqlExcludeDirectiveEnabled:                    false,
 		VerifiedPhoneLabelEnabled:                                      false,
 		ResponsiveWebGraphqlTimelineNavigationEnabled:                  true,
-		ViewCountsPublicVisibilityEnabled:                              true,
-		ViewCountsEverywhereApiEnabled:                                 true,
+		ResponsiveWebGraphqlSkipUserProfileImageExtensionsEnabled:      false,
 		TweetypieUnmentionOptimizationEnabled:                          true,
-		ResponsiveWebUcGqlEnabled:                                      true,
 		VibeApiEnabled:                                                 true,
 		ResponsiveWebEditTweetApiEnabled:                               true,
 		GraphqlIsTranslatableRwebTweetIsTranslatableEnabled:            true,
+		ViewCountsEverywhereApiEnabled:                                 true,
+		LongformNotetweetsConsumptionEnabled:                           true,
+		FreedomOfSpeechNotReachAppealLabelEnabled:                      false,
 		StandardizedNudgesMisinfo:                                      true,
 		TweetWithVisibilityResultsPreferGqlLimitedActionsPolicyEnabled: false,
 		InteractiveTextEnabled:                                         true,
 		ResponsiveWebTextConversationsEnabled:                          false,
-		ResponsiveWebEnhanceCardsEnabled:                               true,
+		ResponsiveWebEnhanceCardsEnabled:                               false,
 	}
 }
 

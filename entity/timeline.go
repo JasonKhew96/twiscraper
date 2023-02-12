@@ -11,7 +11,7 @@ type TimelineInstruction = json.RawMessage
 type TimelineEntry = json.RawMessage
 
 type TimelineInstructionAddEntries struct {
-	Type    string            `json:"type"`
+	Type    string          `json:"type"`
 	Entries []TimelineEntry `json:"entries"`
 }
 
@@ -46,11 +46,11 @@ type HomeLatestTimelineVariables struct {
 
 type HomeTimelineResponse struct {
 	Errors []TwitterError `json:"errors"`
-	Data struct {
+	Data   struct {
 		Home struct {
 			HomeTimelineUrt struct {
 				Instructions    []TimelineInstruction `json:"instructions"`
-				ResponseObjects interface{}       `json:"responseObjects"`
+				ResponseObjects interface{}           `json:"responseObjects"`
 			} `json:"home_timeline_urt"`
 		} `json:"home"`
 	} `json:"data"`
