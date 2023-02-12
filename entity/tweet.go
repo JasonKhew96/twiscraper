@@ -435,10 +435,13 @@ func (t *TweetResult) Parse() (*ParsedTweet, error) {
 		return nil, fmt.Errorf("failed to parse created at: %v", err)
 	}
 
+	entities := t.Legacy.Entities
+
 	var fullText string
 	var extendedEntities MediaEntities
 	if t.NoteTweet != nil {
 		fullText = t.NoteTweet.NoteTweetResults.Result.Text
+		entities = t.NoteTweet.NoteTweetResults.Result.EntitySet
 		extendedEntities = t.NoteTweet.NoteTweetResults.Result.EntitySet
 	} else {
 		fullText = html.UnescapeString(t.Legacy.FullText)
@@ -502,7 +505,7 @@ func (t *TweetResult) Parse() (*ParsedTweet, error) {
 	}
 
 	var userMentions []UserMentions
-	for _, entity := range extendedEntities.UserMentions {
+	for _, entity := range entities.UserMentions {
 		userMentions = append(userMentions, UserMentions{
 			UserId:     entity.IdStr,
 			Name:       entity.Name,
@@ -510,12 +513,12 @@ func (t *TweetResult) Parse() (*ParsedTweet, error) {
 		})
 	}
 	var urls []string
-	for _, entity := range extendedEntities.Urls {
+	for _, entity := range entities.Urls {
 		fullText = strings.ReplaceAll(fullText, entity.Url, entity.ExpandedUrl)
 		urls = append(urls, entity.ExpandedUrl)
 	}
 	var hashtags []string
-	for _, entity := range extendedEntities.Hashtags {
+	for _, entity := range entities.Hashtags {
 		hashtags = append(hashtags, entity.Text)
 	}
 
