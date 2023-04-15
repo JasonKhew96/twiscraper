@@ -76,6 +76,9 @@ func (s *Scraper) GetTweetDetail(focalTweetId string) (*entity.ParsedTweet, erro
 					if err != nil {
 						return nil, fmt.Errorf("failed to parse tweet: %v", err)
 					}
+					if parsedTweet.TweetId != focalTweetId {
+						continue
+					}
 					parsedTweet.IsRecommended = tweetEntry.Content.ItemContent.SocialContext != nil
 					return parsedTweet, nil
 				case "TimelineTimelineModule":
