@@ -152,6 +152,9 @@ type TweetLegacy struct {
 	FavoriteCount             int           `json:"favorite_count"`
 	Favorited                 bool          `json:"favorited"`
 	FullText                  string        `json:"full_text"`
+	InReplyToScreenName       string        `json:"in_reply_to_screen_name"`
+	InReplyToStatusIdStr      string        `json:"in_reply_to_status_id_str"`
+	InReplyToUserIdStr        string        `json:"in_reply_to_user_id_str"`
 	IsQuoteStatus             bool          `json:"is_quote_status"`
 	Lang                      string        `json:"lang"`
 	PossiblySensitive         bool          `json:"possibly_sensitive"`
@@ -238,6 +241,20 @@ type TimelineTweetEntry struct {
 			SocialContext    *SocialContext    `json:"socialContext"`
 			ReactiveTriggers interface{}       `json:"reactive_triggers"`
 		} `json:"itemContent"`
+		Items []struct {
+			EntryId string `json:"entryId"`
+			Item    struct {
+				ItemContent struct {
+					ItemType         string            `json:"itemType"`
+					TypeName         string            `json:"__typename"`
+					TweetResults     *TweetResults     `json:"tweet_results"`
+					TweetDisplayType string            `json:"tweetDisplayType"`
+					PromotedMetadata *PromotedMetadata `json:"promotedMetadata"`
+				} `json:"itemContent"`
+				ClientEventInfo interface{} `json:"clientEventInfo"`
+			} `json:"item"`
+		} `json:"items"`
+		DisplayType     string      `json:"displayType"`
 		FeedbackInfo    interface{} `json:"feedbackInfo"`
 		ClientEventInfo interface{} `json:"clientEventInfo"`
 	} `json:"content"`
@@ -409,6 +426,7 @@ type ParsedTweet struct {
 	Url               string
 	Views             int
 	ParsedUser        ParsedUser
+	Replies           [][]*ParsedTweet
 }
 
 func (t *TweetResult) Parse() (*ParsedTweet, error) {

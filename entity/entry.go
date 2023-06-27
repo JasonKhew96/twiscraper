@@ -1,7 +1,9 @@
 package entity
 
 type Entry struct {
-	Content struct {
+	EntryId   string `json:"entryId"`
+	SortIndex string `json:"sortIndex"`
+	Content   struct {
 		EntryType string `json:"entryType"`
 	} `json:"content"`
 }
