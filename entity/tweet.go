@@ -456,15 +456,13 @@ func (t *TweetResult) Parse() (*ParsedTweet, error) {
 	entities := t.Legacy.Entities
 
 	var fullText string
-	var extendedEntities MediaEntities
 	if t.NoteTweet != nil {
 		fullText = t.NoteTweet.NoteTweetResults.Result.Text
 		entities = t.NoteTweet.NoteTweetResults.Result.EntitySet
-		extendedEntities = t.NoteTweet.NoteTweetResults.Result.EntitySet
 	} else {
 		fullText = html.UnescapeString(t.Legacy.FullText)
-		extendedEntities = t.Legacy.ExtendedEntities
 	}
+	extendedEntities := t.Legacy.ExtendedEntities
 
 	var medias []ParsedMedia
 	for i, mediaRaw := range extendedEntities.Media {
