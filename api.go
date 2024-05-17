@@ -93,7 +93,7 @@ func (s *Scraper) requestAPI(req *http.Request, target interface{}) error {
 }
 
 func (s *Scraper) refreshGuestToken() error {
-	req, err := http.NewRequest(http.MethodPost, "https://x.com/i/1.1/guest/activate.json", nil)
+	req, err := http.NewRequest(http.MethodPost, "https://api.x.com/1.1/guest/activate.json", nil)
 	if err != nil {
 		return err
 	}
