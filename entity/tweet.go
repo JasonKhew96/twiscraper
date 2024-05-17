@@ -583,7 +583,7 @@ func (t *TweetResult) Parse() (*ParsedTweet, error) {
 		RetweetedTweet:    retweetedTweet,
 		IsReply:           isReply,
 		RepliedTweet:      repliedTweet,
-		Url:               fmt.Sprintf("https://twitter.com/%s/status/%s", userResult.ScreenName, t.Legacy.IdStr),
+		Url:               fmt.Sprintf("https://x.com/%s/status/%s", userResult.ScreenName, t.Legacy.IdStr),
 		Views:             views,
 		ParsedUser:        *userResult,
 	}

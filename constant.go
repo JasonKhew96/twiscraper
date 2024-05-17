@@ -11,8 +11,8 @@ const (
 	defaultUserAgent     = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36"
 
 	scheme        = "https"
-	endpoint      = "api.twitter.com"
-	graphqlPath   = "/graphql"
+	endpoint      = "x.com"
+	graphqlPath   = "/i/api/graphql"
 	graphqlPrefix = scheme + "://" + endpoint + graphqlPath
 
 	// TODO
@@ -29,6 +29,6 @@ const (
 
 	apiTweetDetail = graphqlPrefix + "/VaihYjIIeVg4gfvwMgQsUA/TweetDetail"
 
-	apiFriendShipsCreate  = scheme + "://" + endpoint + "/1.1/friendships/create.json"
-	apiFriendshipsDestroy = scheme + "://" + endpoint + "/1.1/friendships/destroy.json"
+	apiFriendShipsCreate  = scheme + "://" + endpoint + "/i/api/1.1/friendships/create.json"
+	apiFriendshipsDestroy = scheme + "://" + endpoint + "/i/api/1.1/friendships/destroy.json"
 )
