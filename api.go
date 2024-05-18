@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"strconv"
 	"time"
 
 	"github.com/andybalholm/brotli"
@@ -48,6 +49,19 @@ func (s *Scraper) requestAPI(req *http.Request, target interface{}) error {
 	}
 	defer resp.Body.Close()
 
+	if resp.Header.Get("x-rate-limit-remaining") == "0" || resp.StatusCode == http.StatusTooManyRequests {
+		s.guestToken = ""
+		reset, err := strconv.ParseInt(resp.Header.Get("x-rate-limit-reset"), 10, 64)
+		if err != nil {
+			return fmt.Errorf("failed to parse x-rate-limit-reset: %v", err)
+		}
+		resetTime := time.Unix(reset, 0)
+		until := time.Until(resetTime)
+		s.sugar.Infof("rate limit exceeded, reset at %s, sleep for %.2f", resetTime, until.Seconds())
+		time.Sleep(until)
+		return s.requestAPI(req, target)
+	}
+
 	var content []byte
 	switch resp.Header.Get("Content-Encoding") {
 	case "gzip":
@@ -80,12 +94,8 @@ func (s *Scraper) requestAPI(req *http.Request, target interface{}) error {
 		}
 	}
 
-	if resp.StatusCode != http.StatusOK && resp.StatusCode != http.StatusForbidden {
+	if resp.StatusCode != http.StatusOK && resp.StatusCode != http.StatusForbidden && resp.StatusCode != http.StatusTooManyRequests {
 		return fmt.Errorf("request api failed %s: %s", resp.Status, content)
-	}
-
-	if resp.Header.Get("X-Rate-Limit-Remaining") == "0" {
-		s.guestToken = ""
 	}
 
 	s.sugar.Debugf("request api %s\n%s", req.URL, content)
