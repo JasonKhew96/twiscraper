@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"html"
+	"log"
 	"net/url"
 	"strconv"
 	"strings"
@@ -433,10 +434,14 @@ func (t *TweetResult) Parse() (*ParsedTweet, error) {
 	if t.TypeName == "TweetWithVisibilityResults" { // wtf
 		return t.Tweet.Parse()
 	}
+	// TweetTombstone
+	if t.TypeName != "Tweet" {
+		return nil, nil
+	}
 
 	userResult, err := t.Core.UserResults.Result.Parse()
 	if err != nil {
-		return nil, fmt.Errorf("failed to parse user: %v", err)
+		log.Printf("failed to parse user: %v", err)
 	}
 
 	var repliedTweet *ParsedTweet
@@ -444,7 +449,7 @@ func (t *TweetResult) Parse() (*ParsedTweet, error) {
 	if isReply {
 		repliedTweet, err = t.QuotedStatusResult.Result.Parse()
 		if err != nil {
-			return nil, fmt.Errorf("failed to parse replied tweet: %v", err)
+			log.Printf("failed to parse replied tweet %s: %v", t.Legacy.IdStr, err)
 		}
 	}
 
