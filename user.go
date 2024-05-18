@@ -216,6 +216,14 @@ func (s *Scraper) fetchFollowers(opt fetchOptions, userId string, count int, cur
 						s.sugar.Errorln(err)
 						continue
 					}
+
+					// cache ids
+					_, ok := cachedUserIds.Load(parsedUser.ScreenName)
+					if !ok {
+						s.sugar.Debugln("caching user id", parsedUser.ScreenName)
+						cachedUserIds.Store(parsedUser.ScreenName, parsedUser.UserId)
+					}
+
 					userResults = append(userResults, *parsedUser)
 				case "TimelineTimelineCursor":
 					var cursorEntry entity.TimelineCursorEntry
