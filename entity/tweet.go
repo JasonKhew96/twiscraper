@@ -435,9 +435,9 @@ func (t *TweetResult) Parse() (*ParsedTweet, error) {
 		return t.Tweet.Parse()
 	}
 	// TweetTombstone
-	if t.TypeName != "Tweet" {
-		return nil, nil
-	}
+	// if t.TypeName != "Tweet" && t.TypeName != "" {
+	// 	return nil, nil
+	// }
 
 	userResult, err := t.Core.UserResults.Result.Parse()
 	if err != nil {

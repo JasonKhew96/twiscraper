@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"net/http"
 	"net/url"
+	"strings"
 
 	"github.com/JasonKhew96/twiscraper/entity"
 )
@@ -171,8 +172,30 @@ func (s *Scraper) fetchHomeTimeline(opt fetchOptions, count int, cursor string) 
 						nextCursor = cursorEntry.Content.Value
 					}
 				case "TimelineTimelineModule":
-					// TODO
-					continue
+					if !strings.HasPrefix(entry.EntryId, "home-conversation-") {
+						continue
+					}
+					var tweetEntry entity.TimelineTweetEntry
+					err := json.Unmarshal(entryRaw, &tweetEntry)
+					if err != nil {
+						s.sugar.Errorln(err)
+						continue
+					}
+					for _, item := range tweetEntry.Content.Items {
+						if item.Item.ItemContent.TweetResults == nil {
+							s.sugar.Errorln("tweet results is nil")
+							continue
+						}
+						if item.Item.ItemContent.PromotedMetadata != nil {
+							continue
+						}
+						parsedTweet, err := item.Item.ItemContent.TweetResults.Result.Parse()
+						if err != nil {
+							s.sugar.Errorln(err)
+							continue
+						}
+						tweetResults = append(tweetResults, *parsedTweet)
+					}
 				default:
 					fmt.Printf("unknown entry type: %s\n", entry.Content.EntryType)
 				}
